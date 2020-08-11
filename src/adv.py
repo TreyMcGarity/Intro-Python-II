@@ -1,6 +1,13 @@
 from room import Room
 from player import Player
-# Declare all the rooms
+from item import Item
+
+# Declare all the items and rooms
+
+items = {
+    "pencil" : Item("pencil", "to write things down."),
+    "paper" : Item("paper", "could be written on"),
+}
 
 room = {
     'outside':  Room("Outside Cave Entrance",
@@ -21,6 +28,10 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+# Put items in rooms
+
+room['outside'].add_item('pencil')
+room['foyer'].add_item('paper')
 
 # Link rooms together
 
@@ -39,6 +50,11 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room["outside"])
+
+# show items
+# def show_items(items):
+#     for i in items:
+#         print(f"{i.name}, {i.description}")
 # Write a loop that:
 #
 # * Prints the current room name
@@ -46,26 +62,55 @@ player = Player(room["outside"])
 # * Waits for user input and decides what to do.
 #
 while True:
-    print(f"{player.current_room.name},\n{player.current_room.description}")
-    travel_to = input('(Press "n" fo North, "e" for East, "s" for South, "w" for West, "q" to quit)\nWhere to?')
+    print(f"""
+    {player.current_room.name},
+    {player.current_room.description}!
+    There are {player.current_room.items} in this room.
+    -----------------------------------------------------------------
+    | Press "n" fo North, "e" for East, "s" for South, "w" for West | 
+    | "i" for Inventory, or "q" to quit                             |
+    -----------------------------------------------------------------""")
+    travel_to = input("\nWhat Next?")
+    player_input = travel_to.lower().split(" ")
     print("______________________________________________________________")
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-    if travel_to == 'n' or travel_to == 'e' or travel_to == 's' or travel_to == 'w' or travel_to == 'q':
-        if travel_to == "n" and player.current_room.n_to:
-            player.current_room = player.current_room.n_to
-        elif travel_to == "e" and player.current_room.e_to:
-            player.current_room = player.current_room.e_to
-        elif travel_to == "s" and player.current_room.s_to:
-            player.current_room = player.current_room.s_to
-        elif travel_to == "w" and player.current_room.w_to:
-            player.current_room = player.current_room.w_to
-        elif travel_to == "q":
-            print("You Left the Game")
-            break
+    if len(player_input) == 1:
+        if travel_to == 'n' or travel_to == 'e' or travel_to == 's' or travel_to == 'w' or travel_to == 'q' or travel_to == "i":
+            if travel_to == "n" and player.current_room.n_to:
+                player.current_room = player.current_room.n_to
+            elif travel_to == "e" and player.current_room.e_to:
+                player.current_room = player.current_room.e_to
+            elif travel_to == "s" and player.current_room.s_to:
+                player.current_room = player.current_room.s_to
+            elif travel_to == "w" and player.current_room.w_to:
+                player.current_room = player.current_room.w_to
+            elif travel_to == "q":
+                print("You Left the Game")
+                break
+            elif travel_to == "i":
+                print("Inventory:",player.show_items(player.items))
+            else:
+                print("Not an available direction.")
         else:
-            print("not an option")
+            print("Enter a cardinal direction.\n")
+    elif len(player_input) == 2:
+        if player_input[0] == "take" or "get":
+            if player_input[1] not in player.current_room.items:
+                print("That is not in this room.")
+            else:
+                print("Took", player_input[1])
+                player.current_room.remove_item(player_input[1])
+                player.add_item(player_input[1])
+        elif player_input[0] == "drop":
+            print("Dropped", player_input[1])
+            player.current_room.add_item(player_input[1])
+            player.remove_item(player_input[1])
+        else:
+            print("Not an available action.")
     else:
-        print("Enter one of the optional directions.\n")
+        print("Not an option")
+
+
