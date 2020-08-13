@@ -6,36 +6,49 @@ from item import Item
 
 items = {
     "pencil" : Item("pencil", "to write things down."),
+    "rock" : Item("rock", "just a rock"),
     "paper" : Item("paper", "could be written on"),
+    "scissors" : Item("scissors", "can cut something")
 }
 
 room = {
-    'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+    'outside': Room("Outside Cave Entrance", "North of you, the cave mount beckons."),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+    'trail': Room("Forest trail", """A long, winding dirt trail through the thick forest 
+    which leads north to the Cave Entrance and south to a bridge."""),
+
+    'bridge': Room("Old bridge","""It's destroyed and there is no other way to cross
+    the raging river south."""),
+
+    'foyer': Room("Foyer", """Dim light filters in from the south. Dusty
+    passages run north and east."""),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
-into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+    into the darkness. Ahead to the north, a light flickers in
+    the distance, but there is no way across the chasm."""),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+    'narrow': Room("Narrow Passage", """The narrow passage bends here from west
+    to north. The smell of gold permeates the air."""),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+    chamber! Sadly, it has already been completely emptied by
+    earlier adventurers. The only exit is to the south."""),
 }
 
 # Put items in rooms
 
 room['outside'].add_item('pencil')
 room['foyer'].add_item('paper')
+room['trail'].add_item('rock')
+room['overlook'].add_item('scissors')
 
 # Link rooms together
 
 room['outside'].n_to = room['foyer']
+room['outside'].s_to = room['trail']
+room['trail'].s_to = room['bridge']
+room['trail'].n_to = room['outside']
+room['bridge'].n_to = room['trail']
 room['foyer'].s_to = room['outside']
 room['foyer'].n_to = room['overlook']
 room['foyer'].e_to = room['narrow']
@@ -51,28 +64,23 @@ room['treasure'].s_to = room['narrow']
 # Make a new player object that is currently in the 'outside' room.
 player = Player(room["outside"])
 
-# show items
-# def show_items(items):
-#     for i in items:
-#         print(f"{i.name}, {i.description}")
 # Write a loop that:
 #
 # * Prints the current room name
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
-#
+
 while True:
     print(f"""
-    {player.current_room.name},
-    {player.current_room.description}!
-    There are {player.current_room.items} in this room.
-    -----------------------------------------------------------------
-    | Press "n" fo North, "e" for East, "s" for South, "w" for West | 
-    | "i" for Inventory, or "q" to quit                             |
-    -----------------------------------------------------------------""")
+    {player.current_room.name}, {player.current_room.description}
+
+    There are {player.current_room.items or "no items"} in this room.
+    -----------------------------------------------------------
+    | "n" fo North, "e" for East, "s" for South, "w" for West | 
+    | "i" for Inventory, or "q" to quit                       |
+    -----------------------------------------------------------""")
     travel_to = input("\nWhat Next?")
     player_input = travel_to.lower().split(" ")
-    print("______________________________________________________________")
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
@@ -91,26 +99,27 @@ while True:
                 print("You Left the Game")
                 break
             elif travel_to == "i":
-                print("Inventory:",player.show_items(player.items))
+                print("Inventory", player.show_items(player.items) or "is empty")
             else:
                 print("Not an available direction.")
         else:
-            print("Enter a cardinal direction.\n")
+            print("Enter a cardinal direction.")
     elif len(player_input) == 2:
-        if player_input[0] == "take" or "get":
+        if player_input[0] == "take":
             if player_input[1] not in player.current_room.items:
                 print("That is not in this room.")
             else:
-                print("Took", player_input[1])
+                print("You have picked up the", player_input[1])
                 player.current_room.remove_item(player_input[1])
                 player.add_item(player_input[1])
         elif player_input[0] == "drop":
-            print("Dropped", player_input[1])
-            player.current_room.add_item(player_input[1])
-            player.remove_item(player_input[1])
+            if player_input[1] not in player.items:
+                print("You don't have", player_input[1])
+            else:
+                print("You have dropped the", player_input[1])
+                player.current_room.add_item(player_input[1])
+                player.remove_item(player_input[1])
         else:
             print("Not an available action.")
     else:
         print("Not an option")
-
-
