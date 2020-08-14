@@ -4,11 +4,11 @@ from item import Item
 
 # Declare all the items and rooms
 
-items = {
-    "pencil" : Item("pencil", "to write things down."),
-    "rock" : Item("rock", "just a rock"),
-    "paper" : Item("paper", "could be written on"),
-    "scissors" : Item("scissors", "can cut something")
+item = {
+    "pencil" : Item("pencil", "to write with."),
+    "paper" : Item("paper", "could be written on."),
+    "rock" : Item("rock", "just a rock."),
+    "scissors" : Item("scissors", "to cut with.")
 }
 
 room = {
@@ -37,10 +37,10 @@ room = {
 
 # Put items in rooms
 
-room['outside'].add_item('pencil')
-room['foyer'].add_item('paper')
-room['trail'].add_item('rock')
-room['overlook'].add_item('scissors')
+room["outside"].items.append(item['pencil'])
+room["trail"].items.append(item['rock'])
+room["foyer"].items.append(item['paper'])
+room["overlook"].items.append(item['scissors'])
 
 # Link rooms together
 
@@ -62,7 +62,7 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-player = Player(room["outside"])
+player = Player(room['outside'])
 
 # Write a loop that:
 #
@@ -71,55 +71,38 @@ player = Player(room["outside"])
 # * Waits for user input and decides what to do.
 
 while True:
-    print(f"""
-    {player.current_room.name}, {player.current_room.description}
-
-    There are {player.current_room.items or "no items"} in this room.
+    decision = input(f"""
+    {player.current_room}
     -----------------------------------------------------------
     | "n" fo North, "e" for East, "s" for South, "w" for West | 
     | "i" for Inventory, or "q" to quit                       |
-    -----------------------------------------------------------""")
-    travel_to = input("\nWhat Next?")
-    player_input = travel_to.lower().split(" ")
+    -----------------------------------------------------------
+    
+Whats Next?""")
+    split_decision = decision.split()
+    
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-    if len(player_input) == 1:
-        if travel_to == 'n' or travel_to == 'e' or travel_to == 's' or travel_to == 'w' or travel_to == 'q' or travel_to == "i":
-            if travel_to == "n" and player.current_room.n_to:
-                player.current_room = player.current_room.n_to
-            elif travel_to == "e" and player.current_room.e_to:
-                player.current_room = player.current_room.e_to
-            elif travel_to == "s" and player.current_room.s_to:
-                player.current_room = player.current_room.s_to
-            elif travel_to == "w" and player.current_room.w_to:
-                player.current_room = player.current_room.w_to
-            elif travel_to == "q":
-                print("You Left the Game")
-                break
-            elif travel_to == "i":
-                print("Inventory", player.show_items(player.items) or "is empty")
-            else:
-                print("Not an available direction.")
+    if len(split_decision) == 1:
+        decision = decision.lower()[0]
+        if decision == "n" or decision == "e" or decision == "s" or decision == "w":
+            player.go_to(decision)
+        elif decision == "i":
+            player.show_items()
+        elif decision == "q":
+            print('You left the game')
+            break
         else:
-            print("Enter a cardinal direction.")
-    elif len(player_input) == 2:
-        if player_input[0] == "take":
-            if player_input[1] not in player.current_room.items:
-                print("That is not in this room.")
-            else:
-                print("You have picked up the", player_input[1])
-                player.current_room.remove_item(player_input[1])
-                player.add_item(player_input[1])
-        elif player_input[0] == "drop":
-            if player_input[1] not in player.items:
-                print("You don't have", player_input[1])
-            else:
-                print("You have dropped the", player_input[1])
-                player.current_room.add_item(player_input[1])
-                player.remove_item(player_input[1])
+            print(
+                "Invalid key. Please type North, East, South, or West to move or q to quit the game.")
+    elif len(split_decision) == 2:
+        if split_decision[0] == "take":
+            player.on_take(split_decision[1].lower())
+        elif split_decision[0] == "drop":
+            player.on_drop(split_decision[1].lower())
         else:
             print("Not an available action.")
     else:
-        print("Not an option")
+        print("Not an option.")
