@@ -23,9 +23,9 @@ class Player:
             else:
                 print("This item is not in this room.")
 
-    def on_drop(self, player_item):
+    def on_drop(self, the_item):
         for item in self.items:
-            if item.name == player_item:
+            if item.name == the_item:
                 self.items.remove(item)
                 self.current_room.items.append(item)
                 print(f'You have dropped the {item.name}')
