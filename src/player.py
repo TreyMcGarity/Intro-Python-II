@@ -12,7 +12,7 @@ class Player:
             print("Not an avaiable direction.")
 
     def show_items(self):
-        print(f'Inventory: {", and ".join([item.name for item in self.items])}')
+        print(f'Inventory: {", and ".join([item.name + ", " + item.description for item in self.items])}')
 
     def on_take(self, the_item):
         for item in self.current_room.items:
