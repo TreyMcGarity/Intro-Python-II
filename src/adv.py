@@ -5,10 +5,10 @@ from item import Item
 # Declare all the items and rooms
 
 item = {
-    "pencil" : Item("pencil", "to write with."),
-    "paper" : Item("paper", "could be written on."),
-    "rock" : Item("rock", "just a rock."),
-    "scissors" : Item("scissors", "to cut with.")
+    "pencil" : Item("pencil", "to write with"),
+    "paper" : Item("paper", "could be written on"),
+    "rock" : Item("rock", "just a rock"),
+    "scissors" : Item("scissors", "to cut with")
 }
 
 room = {
