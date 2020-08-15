@@ -79,14 +79,13 @@ while True:
     -----------------------------------------------------------
     
 Whats Next? """)
-    split_decision = decision.split()
+    split_decision = decision.lower().split()
 
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
     if len(split_decision) == 1:
-        decision = decision[0].lower()
         if decision == "n" or decision == "e" or decision == "s" or decision == "w":
             player.go_to(decision)
         elif decision == "i":
@@ -98,9 +97,9 @@ Whats Next? """)
             print("Not a available decision.")
     elif len(split_decision) == 2:
         if split_decision[0] == "take":
-            player.on_take(split_decision[1].lower())
+            player.on_take(split_decision[1])
         elif split_decision[0] == "drop":
-            player.on_drop(split_decision[1].lower())
+            player.on_drop(split_decision[1])
         else:
             print("Not an available action.")
     else:
