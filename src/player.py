@@ -1,8 +1,8 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 class Player:
-    def __init__(self, starting_room):
-        self.current_room = starting_room
+    def __init__(self, current_room):
+        self.current_room = current_room
         self.items = []
 
     def go_to(self, direction):
@@ -12,8 +12,18 @@ class Player:
             print("Not an avaiable direction.")
 
     def show_items(self):
-        print(f'Inventory: {", and ".join([item.name + ": " + item.description for item in self.items])}')
+        if self.items:
+            print(f'Inventory:\n{", ".join([item.name + ": " + item.description for item in self.items])}')
+        else:
+            print(f'Inventory is empty.')
 
+    """
+    Attention:
+    1) wont show error unless a item is in room
+        //room prints list if list and string if not.
+    2) on_take loops error based on number of items in room
+        //for loop makes issue.
+    """
     def on_take(self, the_item):
         for item in self.current_room.items:
             if item.name == the_item:

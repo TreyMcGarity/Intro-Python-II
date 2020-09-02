@@ -1,3 +1,4 @@
+import os
 from room import Room
 from player import Player
 from item import Item
@@ -79,6 +80,7 @@ while True:
     -----------------------------------------------------------
     
 Whats Next? """)
+    print("_______________________________________________________________")
     split_decision = decision.lower().split()
 
 # If the user enters a cardinal direction, attempt to move to the room there.

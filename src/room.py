@@ -13,8 +13,8 @@ class Room:
     def __str__(self):
       if self.items:
         output = f"""{self.name}, {self.description}\n
-    There is a {", and ".join([item.name for item in self.items])} in this room."""
+    There is a {" and ".join([item.name for item in self.items])} in this room."""
         return output
       else:
         return f"""{self.name}, {self.description}\n
-    There is nothing in this room."""
+    # There is nothing in this room."""
