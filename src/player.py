@@ -17,27 +17,27 @@ class Player:
         else:
             print(f'Inventory is empty.')
 
-    """
-    Attention:
-    1) wont show error unless a item is in room
-        //room prints list if list and string if not.
-    2) on_take loops error based on number of items in room
-        //for loop makes issue.
-    """
     def on_take(self, the_item):
-        for item in self.current_room.items:
-            if item.name == the_item:
-                self.items.append(item)
-                self.current_room.items.remove(item)
-                print(f'You have picked up the {item.name}')
-            else:
-                print("This item is not in this room.")
+        if self.current_room.items:
+            for item in self.current_room.items:
+                if item.name == the_item:
+                    self.items.append(item)
+                    self.current_room.items.remove(item)
+                    print(f'You have picked up the {item.name}')
+                else:
+                    print("This item is not in this room.")
+                    break
+        else:
+            print("This item is not in this room.")
 
     def on_drop(self, the_item):
-        for item in self.items:
-            if item.name == the_item:
-                self.items.remove(item)
-                self.current_room.items.append(item)
-                print(f'You have dropped the {item.name}')
-            else:
-                print("You do not have this item.")
+        if self.items:
+            for item in self.items:
+                if item.name == the_item:
+                    self.items.remove(item)
+                    self.current_room.items.append(item)
+                    print(f'You have dropped the {item.name}')
+                else:
+                    print("You do not have this item.")
+        else:
+            print("You do not have this item.")

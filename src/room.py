@@ -11,10 +11,5 @@ class Room:
         self.items = []
 
     def __str__(self):
-      if self.items:
-        output = f"""{self.name}, {self.description}\n
-    There is a {" and ".join([item.name for item in self.items])} in this room."""
-        return output
-      else:
-        return f"""{self.name}, {self.description}\n
-    # There is nothing in this room."""
+      return f"""{self.name}, {self.description}\n
+    There is {" and ".join([item.name for item in self.items if self.items]) or "nothing"} in this room."""
