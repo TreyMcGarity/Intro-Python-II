@@ -98,7 +98,7 @@ Whats Next? """)
         else:
             print("Not a available decision.")
     elif len(split_decision) == 2:
-        if split_decision[0] == "take":
+        if split_decision[0] == "take" or split_decision[0] == "get":
             player.on_take(split_decision[1])
         elif split_decision[0] == "drop":
             player.on_drop(split_decision[1])
