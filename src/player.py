@@ -17,18 +17,21 @@ class Player:
         else:
             print(f'Inventory is empty.')
 
+    #looped error print for not in room condition
+
     def on_take(self, the_item):
         if self.current_room.items:
             for item in self.current_room.items:
+                if item.name != the_item:
+                    continue
                 if item.name == the_item:
                     self.items.append(item)
                     self.current_room.items.remove(item)
                     print(f'You have picked up the {item.name}')
                 else:
                     print("This item is not in this room.")
-                    break
         else:
-            print("This item is not in this room.")
+            print("There is nothing in this room.")
 
     def on_drop(self, the_item):
         if self.items:
@@ -40,4 +43,4 @@ class Player:
                 else:
                     print("You do not have this item.")
         else:
-            print("You do not have this item.")
+            print("You do not have anything in your inventory.")
