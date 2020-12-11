@@ -1,4 +1,5 @@
 import os
+from os import system
 from room import Room
 from player import Player
 from item import Item
@@ -9,7 +10,7 @@ item = {
     "pencil" : Item("pencil", "to write with"),
     "paper" : Item("paper", "could be written on"),
     "rock" : Item("rock", "just a rock"),
-    "scissors" : Item("scissors", "to cut with")
+    "scissors" : Item("scissors", "to cut with"),
 }
 
 room = {
@@ -72,6 +73,7 @@ player = Player(room['outside'])
 # * Waits for user input and decides what to do.
 
 while True:
+    system('cls') 
     decision = input(f"""
     {player.current_room}
     -----------------------------------------------------------
