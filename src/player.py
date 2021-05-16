@@ -13,7 +13,7 @@ class Player:
 
     def show_items(self):
         if self.items:
-            print(f'Inventory:\n{", ".join([item.name + ": " + item.description for item in self.items])}')
+            print(f'__Inventory__\n{", ".join([item.name + ": " + item.description for item in self.items])}')
         else:
             print(f'Inventory is empty.')
 
@@ -44,3 +44,19 @@ class Player:
                     print("You do not have this item.")
         else:
             print("You do not have anything in your inventory.")
+
+    ### ABILITIES ###
+    def use_lightsource(self, the_item):
+        # if lightsource equipped
+        #    "room is lit up"
+        pass
+
+    ## EDT ##
+    def attack(self, the_item):
+        # if weapon equipped (mainhand)
+        #    "swing <item>""
+        pass
+
+    def block(self, the_item):
+        # if sheild equipped (offhand)
+        pass

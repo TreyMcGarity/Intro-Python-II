@@ -11,6 +11,7 @@ item = {
     "paper" : Item("paper", "could be written on"),
     "rock" : Item("rock", "just a rock"),
     "scissors" : Item("scissors", "to cut with"),
+    "torch": Item("torch", "a good source of light")
 }
 
 room = {
@@ -73,7 +74,6 @@ player = Player(room['outside'])
 # * Waits for user input and decides what to do.
 
 while True:
-    system('cls') 
     decision = input(f"""
     {player.current_room}
     -----------------------------------------------------------
